@@ -16,7 +16,8 @@ This will filter any type 3 LSAs from being sent into area 3 for network 192.168
 +---------------------+         +--------+         +--------+         +----------------------+
 
 
-prefix-list BLOCKED_ROUTE deny 192.168.99.0/24 
+prefix-list BLOCKED_ROUTE deny 192.168.99.0/24
+prefix-list BLOCKED_ROUTE allow 0.0.0.0/0 le 32
 
 router ospf 1
  filter-list area 3 prefix BLOCKED_ROUTE in
@@ -49,6 +50,7 @@ router ospf 1
 !!Area 3 router
 
 access-list 1 deny 192.168.88.0 0.0.0.255
+access-list 1 permit any any
 
 router ospf 1
  distribute-list 1 in
