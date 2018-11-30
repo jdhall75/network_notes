@@ -1,9 +1,52 @@
 # OSPF Info
 
-## Attributes
+## Communications
 - Updates are sent using multicast
   - 224.0.0.5 All OSPF routers(DR other)
   - 224.0.0.6 All OSPF Designated Routers
+
+## Neighborship and Adjacency
+- Messages
+ - Hello - Hello messages are sent on interfaces that have been enabled in the OSPF process.
+  - Interfaces can be enabled through the following
+   - network statements with a prefix that matches the IP address on the interfae
+    - `network <prefix> <wildcard_mask> area <area_id>`
+   - ip ospf statements under the interface.
+    - `ip ospf <process_id> area <area_num>`
+- Adjacencies 
+ - Requirements
+  - The devices have to be in the same area
+  - The devices must have the same authentication configuration
+  - The devices must be in the same subnet
+  - The devices hello and dead intervals must match
+  - The devices must have matching stub flags
+ - States
+  - Down - It means no information(hellos) has been received from the neighbor
+  - Init - Hellos have been received from the neighbor
+  - 2-Way - This state is attained when the devices have seen each others hello packets. 
+	More specific the device has to see it own router-id in the neighbor field of the hello hello message.  
+	At the end of the process the DR and BDR have been elected.
+  - Exstart - Routers are determining the start sequence number for the DB exchange. 
+	The router with the highest router-id will become the primary(master) in the exchange. 
+	This implies the DR will become the master. This a seperate election from the DR/BDR process.
+  - Exchnage - In the exchange process the devices exchange DBD packets. 
+	Database descriptors contain LSA headers and only describe the contents of the link state database. 
+  - Loading - The actual exchage of link state information occues at this stage. Based on the information in the DBD 
+	the routers send LSRs. The neighbor provides link information in the form of LSUs. All LSUs are ackknowledged 
+  - Full - Devices are fully adjacent at this point. They have exchanged all their router and network LSAs and their databases
+	are fully synchronized.
+- Timers
+ - Hello - Dead default timer values
+  - There is a shortcut here Ethernet medium: 10 - 40; All others: 30 - 120
+   - Dead interval by default is 4 times the hello
+  - Broadcast: Hello: 10 Dead: 40
+  - Non-Broadcast: Hello 30 Dead 120
+  - Point-to-Point: Hello: 10 Dead: 40
+ - The timers can be altered at the interface level
+  - `ip ospf hello-inteval <seconds>`
+  - `ip ospf dead-interval <seconds>`
+
+## Updates
 - Updates are sent in the form os Link State Advertisements(LSA)
   - LSA Type 1 - Router LSA
     - Sent between routers in the same area. Type 1 LSAs are used to describe its own interfaces and transmitts data about other adjacent routers.
@@ -23,4 +66,5 @@
     - Used to carry IPv6 information through areas. Only flooded on the local link.
   - LSA Type 9 - Intra-Area LSA
     - Is only flooded through a single area. Used for router-LSA, Network-LSA, inter-area-prefix-LSA, inter-area-router-LSA and intra-area-prefix-LSA.
+
 
