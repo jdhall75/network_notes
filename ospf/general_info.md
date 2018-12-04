@@ -1,11 +1,25 @@
 # OSPF Info
 
+OSPF is known as a link state routing protocol.
+
+## Routing
+- The administrative distance for ospf is 110
+- network paths are assigned a cost
+- each link has a cost that is calculated from dividing the reference 
+	bandwidth by the bandwith of the link.
+  - The default reference bandwidth is 100,000,000(10^8) bits.
+  - Example: 100M link cost would be 10^8/10^8 = 1
+- The cost to reach a network is found by adding t½'he outgoing interfaces
+  cost for each link that has to be traversed on the way to the destination
+
+
 ## Communications
 - Updates are sent using multicast
   - 224.0.0.5 All OSPF routers(DR other)
   - 224.0.0.6 All OSPF Designated Routers
 
-## Neighborship and Adjacency
+
+### Neighborship and Adjacency
 - Messages
   - Hello - Hello messages are sent on interfaces that have been enabled in the OSPF process.
     - Interfaces can be enabled through the following
@@ -46,7 +60,7 @@
     - `ip ospf hello-inteval <seconds>`
     - `ip ospf dead-interval <seconds>`
 
-## Updates
+### Updates
 - Updates are sent in the form os Link State Advertisements(LSA)
   - LSA Type 1 - Router LSA
     - Sent between routers in the same area. Type 1 LSAs are used to describe its own interfaces and transmitts data about other adjacent routers.
