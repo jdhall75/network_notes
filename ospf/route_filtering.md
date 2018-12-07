@@ -56,4 +56,11 @@ router ospf 1
  distribute-list 1 in
 !
 ```
+Distribure lists can be used for more than filtering type 3 LSAs
+* They can be applied in the outboud direction filter Type 5 LSAs when redistributing another routing protocol.
+* They are not just used for OSPF either, they can be used in RIP as well.
 
+
+## References
+[CCIE Blog; OSPF Filter-Lists](https://ccieblog.co.uk/ospf/ospf-filter-lists)
+[INE - Using Extended Access-Lists In A Distribute-List](https://blog.ine.com/tag/distribute-list)
