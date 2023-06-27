@@ -15,6 +15,8 @@
     * iterate over L3 interfaces and connect them using subnets
         * IP addresses will have to be integers select all records between network and broadcast addresses
 
+![DB Schema](./imgs/network-inventory-schema.png)
+
 * ARIN Work
     * pull data from ARIN
         * what are we advertising to who?
